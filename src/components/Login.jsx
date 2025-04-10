@@ -3,11 +3,14 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { useNavigate } from "react-router-dom";
-import {BASE_URL} from "../utils/constants";
+import { BASE_URL } from "../utils/constants";
 
 const Login = () => {
   const [emailId, setEmailId] = useState("kidus@gmail.com");
   const [password, setPassword] = useState("Kidus@123");
+
+  const [error, setError] = useState("");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -26,7 +29,7 @@ const Login = () => {
       dispatch(addUser(res.data));
       return navigate("/");
     } catch (error) {
-      console.error(error);
+      setError(error?.response?.data || "Something went wrong");
     }
   };
 
@@ -56,6 +59,7 @@ const Login = () => {
             />
           </fieldset>
           <div className="card-actions justify-center my-1">
+            <p className="text-red-500">{error}</p>
             <button onClick={() => handleLogin()} className="btn btn-wide">
               <span>Login</span>
             </button>
